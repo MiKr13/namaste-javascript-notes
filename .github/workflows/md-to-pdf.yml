@@ -30,10 +30,16 @@ jobs:
           path: output
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v1.6.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
-          COMMIT_MESSAGE: Add .pdf files.
-          PULL_REQUEST_TITLE: Add .pdf files.
-          PULL_REQUEST_BRANCH: pdf-add
-          PULL_REQUEST_BODY: ":wave: Here are the .pdf files you requested."
+        id: cpr
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.PAT }}
+          commit-message: Update report
+          committer: GitHub <noreply@github.com>
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          signoff: false
+          branch: pdf-generate
+          delete-branch: true
+          title: "Pdf attached"
+          labels: |
+            automated pr
