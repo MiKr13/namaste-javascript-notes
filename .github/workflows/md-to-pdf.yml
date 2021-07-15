@@ -23,11 +23,6 @@ jobs:
         with:
           args: --pdf-engine=xelatex --output=output/${{env.FILE_NAME}}.pdf main/lectures.md
 
-      - name: Create HTML
-        uses: docker://pandoc/latex:2.10
-        with:
-          args: --output=output/${{env.FILE_NAME}}.pdf main/lectures.md
-
       - name: Upload
         uses: actions/upload-artifact@v2
         with:
