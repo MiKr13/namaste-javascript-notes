@@ -29,24 +29,11 @@ jobs:
           name: output
           path: output
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v1.6.1
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
-        with:
-          tag_name: v0.1 #${ github.ref }
-          release_name: Release v0.1 #${ github.ref }
-          draft: true
-          prerelease: false
-
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: output/${{env.FILE_NAME}}.pdf
-          asset_name: ${{env.FILE_NAME}}.pdf
-          asset_content_type: application/pdf
+          COMMIT_MESSAGE: Add .pdf files.
+          PULL_REQUEST_TITLE: Add .pdf files.
+          PULL_REQUEST_BRANCH: pdf-add
+          PULL_REQUEST_BODY: ":wave: Here are the .pdf files you requested."
