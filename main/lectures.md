@@ -1283,6 +1283,7 @@ alt="JS Engine Exposed, Google's V8 Architecture in JS Youtube Link"/></a>
 * In below example, we are blocking the main thread. Observe Questiona and Output.
 ![setTimeout Demo](assets/settimeout.jpg)
 
+
 * setTimeout guarantees that it will take at least the given timer to execute the code.
 
 * JS is a synchronous single threaded language. With just 1 thread it runs all pieces of code. It becomes kind of an interpreter language, and runs code very fast inside browser (no need to wait for code to be compiled) (JIT - Just in time compilation). And there are still ways to do async operations as well.
