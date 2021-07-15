@@ -15,19 +15,18 @@ jobs:
 
       - name: Create output directory
         run: |
-          mkdir output  # create output dir
-          ls
+          mkdir pdfs  # create output dir
 
       - name: Create PDF
         uses: docker://pandoc/latex:2.10
         with:
-          args: --pdf-engine=xelatex --output=output/${{env.FILE_NAME}}.pdf main/lectures.md
+          args: --pdf-engine=xelatex --output=pdfs/${{env.FILE_NAME}}.pdf main/lectures.md
 
       - name: Upload
         uses: actions/upload-artifact@v2
         with:
-          name: output
-          path: output
+          name: pdfs
+          path: pdfs
 
       - name: Create Pull Request
         id: cpr
