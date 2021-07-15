@@ -15,16 +15,38 @@ jobs:
 
       - name: Create output directory
         run: |
-          mkdir pdfs  # create output dir
+          mkdir output  # create output dir
           ls
 
       - name: Create PDF
         uses: docker://pandoc/latex:2.10
         with:
-          args: --pdf-engine=xelatex --output=pdfs/${{env.FILE_NAME}}.pdf main/lectures.md
+          args: --pdf-engine=xelatex --output=output/${{env.FILE_NAME}}.pdf main/lectures.md
 
       - name: Upload
         uses: actions/upload-artifact@master
         with:
-          name: pdfs
-          path: pdfs
+          name: output
+          path: output
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${ secrets.GITHUB_TOKEN }
+        with:
+          tag_name: v0.1 #${ github.ref }
+          release_name: Release v0.1 #${ github.ref }
+          draft: true
+          prerelease: false
+
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${ secrets.GITHUB_TOKEN }
+        with:
+          upload_url: ${ steps.create_release.outputs.upload_url }
+          asset_path: output/${{env.FILE_NAME}}.pdf
+          asset_name: Handbook.pdf
+          asset_content_type: application/pdf
