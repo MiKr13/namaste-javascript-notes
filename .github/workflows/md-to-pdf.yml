@@ -1,19 +1,29 @@
-name: MD to PDF HTML
-# This workflow is triggered on pushes to the repository.
-on: [push]
+name: Documentation
+
+on:
+  push:
+    branches: [master]
+
+env:
+  FILE_NAME: namaste-javascript-notes
 
 jobs:
-  converttopdf:
-    name: Build PDF
-    runs-on: ubuntu-latest
+  convert_via_pandoc:
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - uses: baileyjm02/markdown-to-pdf@v1
+
+      - name: Create output directory
+        run: |
+          mkdir pdfs  # create output dir
+
+      - name: Create PDF
+        uses: docker://pandoc/latex:2.10
         with:
-          input_dir: main
-          output_dir: pdfs
-          images_dir: assets
-      - uses: actions/upload-artifact@v1
+          args: --pdf-engine=xelatex --output=pdfs/${{env.FILE_NAME}}.pdf main/lectures.md
+
+      - name: Upload
+        uses: actions/upload-artifact@master
         with:
-          name: notes
+          name: pdfs
           path: pdfs
