@@ -23,8 +23,13 @@ jobs:
         with:
           args: --pdf-engine=xelatex --output=output/${{env.FILE_NAME}}.pdf main/lectures.md
 
+      - name: Create HTML
+        uses: docker://pandoc/latex:2.10
+        with:
+          args: --output=output/${{env.FILE_NAME}}.pdf main/lectures.md
+
       - name: Upload
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v2
         with:
           name: output
           path: output
@@ -35,8 +40,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
         with:
-          tag_name: v0.1 #${ github.ref }
-          release_name: Release v0.1 #${ github.ref }
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
           draft: true
           prerelease: false
 
@@ -46,7 +51,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
         with:
-          upload_url: ${ steps.create_release.outputs.upload_url }
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: output/${{env.FILE_NAME}}.pdf
-          asset_name: Handbook.pdf
+          asset_name: ${{env.FILE_NAME}}.pdf
           asset_content_type: application/pdf
