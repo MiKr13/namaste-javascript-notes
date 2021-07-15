@@ -1,9 +1,6 @@
 name: Convert PDF to Markdown
 
-on:
-  push:
-    paths:
-      - "notes/**.md"
+on: [push]
 
 jobs:
   convert_md:
